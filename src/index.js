@@ -9,7 +9,7 @@ const points = new Map();
 app
     .use(msg => !msg.author.bot) // ignore bots
     .use(async msg => {
-        if(!challenge.get("type")) challenge.set("type", "0");
+        if(!challenge.get("type")) challenge.set("type", null);
         if(msg.author.id === "694395936809418816" && msg.content === "!reset") {
             answers.clear();
             challenge.clear();
