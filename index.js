@@ -70,7 +70,9 @@ client.on("messageReactionAdd", async (react, user) => {
         var hint = false;
 
         if(challenge.get("hint")) {
-            var msg = await react.message.channel.messages.fetch(challenge.get("hint"));
+            var hint = challenge.get("hint").split("|");
+            let ch = await client.channels.fetch(hint[0]);
+            let msg = await ch.messages.fetch(hint[1]);
             if(msg.createdTimestamp < react.message.createdTimestamp) {
                 points -= 0.5;
                 hint = true;

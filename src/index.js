@@ -20,6 +20,10 @@ app
             challenge.set("type", 0);
             msg.reply("Done.");
             return false;
+        } else if(msg.author.id === "694395936809418816" && msg.content === "!hint") {
+            challenge.set("hint", msg.channel.id + "|" + msg.id);
+            msg.reply("Done.");
+            return false;
         } else if(msg.author.id === "694395936809418816" && msg.content.startsWith("!start")) {
             var num = msg.content.split(" ")[1][0];
             if(isNaN(parseInt(num))) {
@@ -36,13 +40,6 @@ app
     .use(async msg => {
         msg.cguild = await msg.client.guilds.fetch("745985920116850781");
         msg.cmember = await msg.cguild.members.fetch(msg.author.id);
-    })
-    .use(msg => {
-        if(challenge.get("hint")) return;
-        if(msg.author.id === "694395936809418816") {
-            challenge.set("hint", msg.id);
-            return false;
-        }
     })
     .use(msg => {
         if(!/^\[[0-9.]+\]/.test(msg.cmember.displayName)) {
