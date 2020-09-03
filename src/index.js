@@ -13,7 +13,12 @@ app
         if(msg.author.id === "694395936809418816" && msg.content === "!reset") {
             answers.clear();
             challenge.clear();
-            msg.reply("done.");
+            points.clear();
+            msg.reply("Done.");
+            return false;
+        } else if(msg.author.id === "694395936809418816" && msg.content === "!end") {
+            challenge.set("type", 0);
+            msg.reply("Done.");
             return false;
         } else if(msg.author.id === "694395936809418816" && msg.content.startsWith("!start")) {
             var num = msg.content.split(" ")[1][0];
