@@ -9,7 +9,10 @@ const client = new discord.Client({
             name: "CNMC",
             type: "PLAYING"
         }
-    }
+    },
+    messageCacheMaxSize: 500,
+    fetchAllMembers: true,
+    partials: ["REACTION"]
 });
 
 client.on("ready", () => {
@@ -58,6 +61,7 @@ async function asyncFilter(arr, predicate) {
 }
 
 client.on("messageReactionAdd", async (react, user) => {
+    var react = await react.fetch();
     if(react.message.channel.id !== "750720332943458648") return;
     if(user.id === client.user.id) return;
     if(!react.message.embeds.length) return;
