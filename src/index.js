@@ -1,13 +1,32 @@
 const { MessageEmbed } = require("discord.js");
 const App = require("../lib/middleware");
-const app = new App();
+const app = new App("main");
+const commands = require("./commands");
 
 const answers = new Map();
 const challenge = new Map();
 const points = new Map();
 
+function makeWriteable(object, property) {
+    var val;
+    var proto = Object.getPrototypeOf(object);
+    Object.defineProperty(object, property, {
+        get: function () { return typeof val !== "undefined" ? val : proto[property]; },
+        set: function(value) { val = value; }
+    });
+}
+
 app
     .use(msg => !msg.author.bot) // ignore bots
+    .use(msg => {
+        if(msg.channel.type === "dm") return;
+        if(!msg.content.startsWith("!")) return;
+        msg.content = msg.content.substr(1);
+        makeWriteable(msg, "guild");
+        msg.guild = msg.client.guilds.resolve("745985920116850781");
+        commands.message(msg);
+        return false;
+    })
     .use(async msg => {
         if(!challenge.get("type")) challenge.set("type", null);
         if(msg.author.id === "694395936809418816" && msg.content === "!reset") {
