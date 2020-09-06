@@ -85,6 +85,18 @@ app
         embed.setFooter(msg.author.id);
         embed.addField("Try", answerCount, true);
         embed.addField("Challenge", challenge.get("type"), true);
+        var hint = false;
+        try {
+            if(challenge.get("hint")) {
+                let hint = challenge.get("hint").split("|");
+                let ch = await client.channels.fetch(hint[0]);
+                let ms = await ch.messages.fetch(hint[1]);
+                if(ms.createdTimestamp < msg.createdTimestamp) {
+                    hint = true;
+                }
+            }
+        } catch(e) {}
+        embed.addField("After hint", hint ? "Yes" : "No", true);
         var m = await channel.send(embed);
         m.react("✅");
         m.react("❌");
